@@ -189,7 +189,20 @@ impl Point {
         let disp = self - other;
         disp.x * disp.x + disp.y * disp.y
     }
-
+	
+	/// Returns the manhattan distance between self and other.
+	///
+	/// # Examples
+	///
+	/// ```
+    /// use point::Point;
+    ///
+    /// let p1 = Point::new(0, 0);
+    /// let p2 = Point::new(2, 1);
+    ///
+    /// // 2-0 = 2, 1-0 = 1, 1+2=3
+    /// assert_eq!(p1.manhattan_dist(p2), 3);
+    /// ```
     #[inline]
     pub fn manhattan_dist(self, other: Self) -> i32 {
         (self.x - other.x).abs() + (self.y - other.y).abs()
