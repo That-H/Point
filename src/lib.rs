@@ -55,7 +55,7 @@ impl Point {
         for _ in 0..4 {
             let new_point = *self + offset;
             points.push(new_point);
-            offset.rotate_90();
+            offset.rotate_90_cw_ip();
         }
         points
     }
@@ -93,10 +93,122 @@ impl Point {
     /// assert_eq!(p, Point::new(0, 1));
     /// ```
     #[inline]
+	#[deprecated(since="0.5.0", note="Use rotate_90_cw_ip instead.")]
     pub const fn rotate_90(&mut self) {
         (self.x, self.y) = (self.y, -self.x);
     }
-
+	
+	/// Returns the co-ordinate rotated about the origin by 90 degrees clockwise.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use point::Point;
+    ///
+    /// let mut p = Point::new(1, 0);
+    ///
+    /// assert_eq!(Point::new(0, -1), p.rotate_90_cw());
+	/// ```
+    #[inline]
+    pub const fn rotate_90_cw(&self) -> Self {
+        Point::new(self.y, -self.x)
+    }
+	
+	/// Rotates the co-ordinate in place about the origin by 90 degrees clockwise.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use point::Point;
+    ///
+    /// let mut p = Point::new(1, 0);
+    ///
+    /// p.rotate_90_cw_ip();
+    /// assert_eq!(p, Point::new(0, -1));
+    ///
+    /// p.rotate_90_cw_ip();
+    /// assert_eq!(p, Point::new(-1, 0));
+    ///
+    /// p.rotate_90_cw_ip();
+    /// assert_eq!(p, Point::new(0, 1));
+    /// ```
+    #[inline]
+    pub const fn rotate_90_cw_ip(&mut self) {
+        (self.x, self.y) = (self.y, -self.x);
+    }
+	
+	/// Returns the co-ordinate rotated about the origin by 90 degrees anti-clockwise.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use point::Point;
+    ///
+    /// let mut p = Point::new(1, 0);
+    ///
+    /// assert_eq!(Point::new(0, 1), p.rotate_90_acw());
+	/// ```
+    #[inline]
+    pub const fn rotate_90_acw(&self) -> Self {
+        Point::new(-self.y, self.x)
+    }
+	
+	/// Rotates the co-ordinate in place about the origin by 90 degrees anti-clockwise.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use point::Point;
+    ///
+    /// let mut p = Point::new(1, 0);
+    ///
+    /// p.rotate_90_acw_ip();
+    /// assert_eq!(p, Point::new(0, 1));
+    ///
+    /// p.rotate_90_acw_ip();
+    /// assert_eq!(p, Point::new(-1, 0));
+    ///
+    /// p.rotate_90_acw_ip();
+    /// assert_eq!(p, Point::new(0, -1));
+	/// ```
+    #[inline]
+    pub const fn rotate_90_acw_ip(&mut self) {
+        (self.x, self.y) = (-self.y, self.x);
+    }
+	
+	/// Returns the co-ordinate rotated about the origin by 180 degrees.
+	/// Equivalent to [Point::neg] if it was `const`.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use point::Point;
+    ///
+    /// let mut p = Point::new(2, 1);
+    /// 
+    /// assert_eq!(p.rotate_180(), Point::new(-2, -1));
+	/// ```
+    #[inline]
+    pub const fn rotate_180(&self) -> Self {
+        Point::new(-self.x, -self.y)
+    }
+	
+	/// Rotates the co-ordinate in place about the origin by 180 degrees.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use point::Point;
+    ///
+    /// let mut p = Point::new(2, 1);
+    /// 
+    /// assert_eq!(p.rotate_180(), Point::new(-2, -1));
+	/// ```
+    #[inline]
+    pub const fn rotate_180_ip(&mut self) {
+        *self = self.rotate_180();
+    }
+	
     /// Maps the four unit points to 0, 1, 2 and 3 for indexing a
     /// collection with 4 elements.
     ///
