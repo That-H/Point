@@ -201,8 +201,9 @@ impl Point {
     /// use point::Point;
     ///
     /// let mut p = Point::new(2, 1);
+	/// p.rotate_180_ip();
     /// 
-    /// assert_eq!(p.rotate_180(), Point::new(-2, -1));
+    /// assert_eq!(p, Point::new(-2, -1));
 	/// ```
     #[inline]
     pub const fn rotate_180_ip(&mut self) {
@@ -402,6 +403,77 @@ impl Point {
     pub const fn bounds_check(&self, max_x: i32, max_y: i32) -> bool {
         0 <= self.x && self.x < max_x && 0 <= self.y && self.y < max_y
     }
+	
+	/// Returns an iterator over all the points on the line between src and dest.
+	/// Uses [Bresenham's Line Algorithm](https://en.wikipedia.org/wiki/Bresenham%27s_line_algorithm) to do so.
+	pub fn plot_line(src: Self, dest: Self) -> LineIter {
+		LineIter::new(src, dest)
+	}
+}
+
+/// An iterator over the points on a line between and including two points.
+pub struct LineIter {
+	dx: i32,
+	sx: i32,
+	dy: i32,
+	sy: i32,
+	err: i32,
+	cur_x: i32,
+	cur_y: i32,
+	end_x: i32,
+	end_y: i32,
+}
+
+impl LineIter {
+	fn new(src: Point, dest: Point) -> Self {
+		let cur_x = src.x;
+		let end_x = dest.x;
+		
+		let cur_y = src.y;
+		let end_y = dest.y;
+		
+		let dx = (end_x - cur_x).abs();
+		let sx = if cur_x < end_x { 1 } else { -1 };
+		
+		let dy = -(end_y - cur_y).abs();
+		let sy = if cur_y < end_y { 1 } else { -1 };
+		
+		let err = dx + dy;
+		
+		Self {
+			dx,
+			sx,
+			dy,
+			sy,
+			err,
+			cur_x,
+			cur_y,
+			end_x,
+			end_y,
+		}
+	}
+}
+
+impl Iterator for LineIter {
+	type Item = Point;
+	
+	fn next(&mut self) -> Option<Self::Item> {		
+		let nx = Point::new(self.cur_x, self.cur_y);
+		let e2 = 2 * self.err;
+		
+		if e2 >= self.dy {
+            if self.cur_x == self.end_x { return None }
+            self.err += self.dy;
+            self.cur_x += self.sx;
+		}
+        if e2 <= self.dx {
+            if self.cur_y == self.end_y { return None }
+            self.err += self.dx;
+            self.cur_y += self.sy;
+        }
+		
+		Some(nx)
+	}
 }
 
 impl ops::Add for Point {
