@@ -410,6 +410,23 @@ impl Point {
 	pub fn plot_line(src: Self, dest: Self) -> LineIter {
 		LineIter::new(src, dest)
 	}
+	
+	/// Returns self ⋅ other; that is, the [dot product](https://en.wikipedia.org/wiki/Dot_product), interpreting
+	/// self and other as 2D vectors.
+	///
+	/// # Examples
+	///
+	/// ```
+	/// use point::Point;
+	///
+	/// let p1 = Point::new(2, 3);
+	/// let p2 = Point::new(-4, 1);
+	///
+	/// // 2 * -4 + 3 * 1 = -5
+	/// assert_eq!(p1.dot(p2), -5);
+	pub fn dot(self, other: Self) -> i32 {
+		self.x * other.x + self.y * other.y
+	}
 }
 
 /// An iterator over the points on a line between two points.
@@ -520,6 +537,18 @@ impl ops::Div<i32> for Point {
         Self {
             x: self.x / other,
             y: self.y / other,
+        }
+    }
+}
+
+impl ops::Mul<i32> for Point {
+    type Output = Self;
+
+    /// Returns a new point containg each co-ordinate multiplied by the given multiplier.
+    fn mul(self, other: i32) -> Self::Output {
+        Self {
+            x: self.x * other,
+            y: self.y * other,
         }
     }
 }
