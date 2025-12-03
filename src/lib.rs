@@ -93,12 +93,12 @@ impl Point {
     /// assert_eq!(p, Point::new(0, 1));
     /// ```
     #[inline]
-	#[deprecated(since="0.5.0", note="Use rotate_90_cw_ip instead.")]
+    #[deprecated(since = "0.5.0", note = "Use rotate_90_cw_ip instead.")]
     pub const fn rotate_90(&mut self) {
         (self.x, self.y) = (self.y, -self.x);
     }
-	
-	/// Returns the co-ordinate rotated about the origin by 90 degrees clockwise.
+
+    /// Returns the co-ordinate rotated about the origin by 90 degrees clockwise.
     ///
     /// # Examples
     ///
@@ -108,13 +108,13 @@ impl Point {
     /// let mut p = Point::new(1, 0);
     ///
     /// assert_eq!(Point::new(0, -1), p.rotate_90_cw());
-	/// ```
+    /// ```
     #[inline]
     pub const fn rotate_90_cw(&self) -> Self {
         Point::new(self.y, -self.x)
     }
-	
-	/// Rotates the co-ordinate in place about the origin by 90 degrees clockwise.
+
+    /// Rotates the co-ordinate in place about the origin by 90 degrees clockwise.
     ///
     /// # Examples
     ///
@@ -136,8 +136,8 @@ impl Point {
     pub const fn rotate_90_cw_ip(&mut self) {
         (self.x, self.y) = (self.y, -self.x);
     }
-	
-	/// Returns the co-ordinate rotated about the origin by 90 degrees anti-clockwise.
+
+    /// Returns the co-ordinate rotated about the origin by 90 degrees anti-clockwise.
     ///
     /// # Examples
     ///
@@ -147,13 +147,13 @@ impl Point {
     /// let mut p = Point::new(1, 0);
     ///
     /// assert_eq!(Point::new(0, 1), p.rotate_90_acw());
-	/// ```
+    /// ```
     #[inline]
     pub const fn rotate_90_acw(&self) -> Self {
         Point::new(-self.y, self.x)
     }
-	
-	/// Rotates the co-ordinate in place about the origin by 90 degrees anti-clockwise.
+
+    /// Rotates the co-ordinate in place about the origin by 90 degrees anti-clockwise.
     ///
     /// # Examples
     ///
@@ -170,14 +170,14 @@ impl Point {
     ///
     /// p.rotate_90_acw_ip();
     /// assert_eq!(p, Point::new(0, -1));
-	/// ```
+    /// ```
     #[inline]
     pub const fn rotate_90_acw_ip(&mut self) {
         (self.x, self.y) = (-self.y, self.x);
     }
-	
-	/// Returns the co-ordinate rotated about the origin by 180 degrees.
-	/// Equivalent to [Point::neg] if it was `const`.
+
+    /// Returns the co-ordinate rotated about the origin by 180 degrees.
+    /// Equivalent to [Point::neg] if it was `const`.
     ///
     /// # Examples
     ///
@@ -185,15 +185,15 @@ impl Point {
     /// use point::Point;
     ///
     /// let mut p = Point::new(2, 1);
-    /// 
+    ///
     /// assert_eq!(p.rotate_180(), Point::new(-2, -1));
-	/// ```
+    /// ```
     #[inline]
     pub const fn rotate_180(&self) -> Self {
         Point::new(-self.x, -self.y)
     }
-	
-	/// Rotates the co-ordinate in place about the origin by 180 degrees.
+
+    /// Rotates the co-ordinate in place about the origin by 180 degrees.
     ///
     /// # Examples
     ///
@@ -201,15 +201,15 @@ impl Point {
     /// use point::Point;
     ///
     /// let mut p = Point::new(2, 1);
-	/// p.rotate_180_ip();
-    /// 
+    /// p.rotate_180_ip();
+    ///
     /// assert_eq!(p, Point::new(-2, -1));
-	/// ```
+    /// ```
     #[inline]
     pub const fn rotate_180_ip(&mut self) {
         *self = self.rotate_180();
     }
-	
+
     /// Maps the four unit points to 0, 1, 2 and 3 for indexing a
     /// collection with 4 elements.
     ///
@@ -302,12 +302,12 @@ impl Point {
         let disp = self - other;
         disp.x * disp.x + disp.y * disp.y
     }
-	
-	/// Returns the manhattan distance between self and other.
-	///
-	/// # Examples
-	///
-	/// ```
+
+    /// Returns the manhattan distance between self and other.
+    ///
+    /// # Examples
+    ///
+    /// ```
     /// use point::Point;
     ///
     /// let p1 = Point::new(0, 0);
@@ -403,95 +403,99 @@ impl Point {
     pub const fn bounds_check(&self, max_x: i32, max_y: i32) -> bool {
         0 <= self.x && self.x < max_x && 0 <= self.y && self.y < max_y
     }
-	
-	/// Returns an iterator over all the points on the line between src and dest.
-	/// Uses [Bresenham's Line Algorithm](https://en.wikipedia.org/wiki/Bresenham%27s_line_algorithm) to do so.
-	/// Note that src is included in the line, but dest is not.
-	pub fn plot_line(src: Self, dest: Self) -> LineIter {
-		LineIter::new(src, dest)
-	}
-	
-	/// Returns self ⋅ other; that is, the [dot product](https://en.wikipedia.org/wiki/Dot_product), interpreting
-	/// self and other as 2D vectors.
-	///
-	/// # Examples
-	///
-	/// ```
-	/// use point::Point;
-	///
-	/// let p1 = Point::new(2, 3);
-	/// let p2 = Point::new(-4, 1);
-	///
-	/// // 2 * -4 + 3 * 1 = -5
-	/// assert_eq!(p1.dot(p2), -5);
-	pub fn dot(self, other: Self) -> i32 {
-		self.x * other.x + self.y * other.y
-	}
+
+    /// Returns an iterator over all the points on the line between src and dest.
+    /// Uses [Bresenham's Line Algorithm](https://en.wikipedia.org/wiki/Bresenham%27s_line_algorithm) to do so.
+    /// Note that src is included in the line, but dest is not.
+    pub fn plot_line(src: Self, dest: Self) -> LineIter {
+        LineIter::new(src, dest)
+    }
+
+    /// Returns self ⋅ other; that is, the [dot product](https://en.wikipedia.org/wiki/Dot_product), interpreting
+    /// self and other as 2D vectors.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use point::Point;
+    ///
+    /// let p1 = Point::new(2, 3);
+    /// let p2 = Point::new(-4, 1);
+    ///
+    /// // 2 * -4 + 3 * 1 = -5
+    /// assert_eq!(p1.dot(p2), -5);
+    pub fn dot(self, other: Self) -> i32 {
+        self.x * other.x + self.y * other.y
+    }
 }
 
 /// An iterator over the points on a line between two points.
 pub struct LineIter {
-	dx: i32,
-	sx: i32,
-	dy: i32,
-	sy: i32,
-	err: i32,
-	cur_x: i32,
-	cur_y: i32,
-	end_x: i32,
-	end_y: i32,
+    dx: i32,
+    sx: i32,
+    dy: i32,
+    sy: i32,
+    err: i32,
+    cur_x: i32,
+    cur_y: i32,
+    end_x: i32,
+    end_y: i32,
 }
 
 impl LineIter {
-	fn new(src: Point, dest: Point) -> Self {
-		let cur_x = src.x;
-		let end_x = dest.x;
-		
-		let cur_y = src.y;
-		let end_y = dest.y;
-		
-		let dx = (end_x - cur_x).abs();
-		let sx = if cur_x < end_x { 1 } else { -1 };
-		
-		let dy = -(end_y - cur_y).abs();
-		let sy = if cur_y < end_y { 1 } else { -1 };
-		
-		let err = dx + dy;
-		
-		Self {
-			dx,
-			sx,
-			dy,
-			sy,
-			err,
-			cur_x,
-			cur_y,
-			end_x,
-			end_y,
-		}
-	}
+    fn new(src: Point, dest: Point) -> Self {
+        let cur_x = src.x;
+        let end_x = dest.x;
+
+        let cur_y = src.y;
+        let end_y = dest.y;
+
+        let dx = (end_x - cur_x).abs();
+        let sx = if cur_x < end_x { 1 } else { -1 };
+
+        let dy = -(end_y - cur_y).abs();
+        let sy = if cur_y < end_y { 1 } else { -1 };
+
+        let err = dx + dy;
+
+        Self {
+            dx,
+            sx,
+            dy,
+            sy,
+            err,
+            cur_x,
+            cur_y,
+            end_x,
+            end_y,
+        }
+    }
 }
 
 impl Iterator for LineIter {
-	type Item = Point;
-	
-	fn next(&mut self) -> Option<Self::Item> {		
-		let nx = Point::new(self.cur_x, self.cur_y);
-		let e2 = 2 * self.err;
-		
-		if e2 >= self.dy {
-            if self.cur_x == self.end_x { return None }
+    type Item = Point;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        let nx = Point::new(self.cur_x, self.cur_y);
+        let e2 = 2 * self.err;
+
+        if e2 >= self.dy {
+            if self.cur_x == self.end_x {
+                return None;
+            }
             self.err += self.dy;
             self.cur_x += self.sx;
-		}
+        }
         if e2 <= self.dx {
-            if self.cur_y == self.end_y { return None }
+            if self.cur_y == self.end_y {
+                return None;
+            }
             self.err += self.dx;
             self.cur_y += self.sy;
         }
-		
-		Some(nx)
-	}
+
+        Some(nx)
+    }
 }
 
 impl ops::Add for Point {

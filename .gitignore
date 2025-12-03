@@ -1,3 +1,6 @@
 # don't care about builds
 debug
 target
+
+*.*~
+*.swp
